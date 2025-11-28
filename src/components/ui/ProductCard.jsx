@@ -1,0 +1,138 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../services/cartService';
+import { addToFavorites, removeFavorites, fetchFavorites } from "../services/favoritesService";
+import { generateProductUrl } from "../utils/urlHelpers";
+
+const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector(state => state.cart);
+  // Sepete ekleme sırasında butonu disable etmek için state
+  const [adding, setAdding] = useState(false);
+
+  const favorites = useSelector(state => state.favorites.items);
+  const isFavorite = favorites.some(fav => fav.productId === product.id);
+
+
+  // Add Favorites
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // Giriş yoksa, sadece ürün id'sini string olarak sakla
+      localStorage.setItem("pendingFavoriteItem", product.id.toString());
+      toast.info("Lütfen giriş yapın!");
+      navigate("/giris-kaydol/giris-yap");
+      return;
+    }
+    setAdding(true);
+    try {
+      if (isFavorite) {
+        await dispatch(removeFavorites(product.id)).unwrap();
+        toast.success('Favorilerden çıkarıldı');
+      } else {
+        await dispatch(addToFavorites(product.id)).unwrap();
+        toast.success('Favorilere eklendi!');
+      }
+      await dispatch(fetchFavorites()).unwrap();
+    } catch {
+      toast.error('Bir hata oluştu');
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  //sepete ekleme sayfasına
+  const handleAddToCart = async (e) => {
+    e.stopPropagation();
+
+    const token = localStorage.getItem("token");
+
+    // Eğer kullanıcı giriş yapmamışsa
+    if (!token) {
+      // Ürünü localStorage'a geçici olarak kaydet
+      localStorage.setItem(
+        "pendingCartItem",
+        JSON.stringify({ productId: product.id, quantity: 1 })
+      );
+      toast.info("Lütfen giriş yapın!");
+      navigate("/giris-kaydol/giris-yap");
+      return;
+    }
+    setAdding(true);
+    try {
+      await dispatch(addToCart({ productId: product.id, quantity: 1 })).unwrap();
+      toast.success("Ürün sepete eklendi");
+    } catch (err) {
+      toast.error(err?.message || "Bir hata oluştu.");
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  //detay sayfası - SEO URL ile
+const handleClick = () => {
+  const productUrl = generateProductUrl(product);
+  
+  // Fallback için basit route
+  if (productUrl === '/') {
+    navigate(`/urun/${product.id}`);
+    return;
+  }
+  
+  navigate(productUrl);
+};
+
+  return (
+    <div
+      onClick={handleClick}
+      className="bg-white border border-gray-200 rounded-xl shadow p-4 flex flex-col hover:shadow-lg transition-all duration-300 cursor-pointer relative"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter") handleClick(); }}
+    >
+      {/* Favori ikonu */}
+      <button
+        className="bg-gray-50 p-2 rounded-full z-10 absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-orange-500"
+        onClick={handleFavoriteClick}
+      >
+        {isFavorite ? (
+          <FaHeart className="text-orange-500" />
+        ) : (
+          <FaRegHeart className="text-gray-400 hover:text-orange-500" />
+        )}
+      </button>
+
+      <div className="relative mb-3">
+        <div className="h-32 w-full rounded-lg mb-3 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+          {product.imageUrls ? (
+            <img src={product.imageUrls[0]} alt={product.name} className="w-2/3 h-full object-contain" />
+          ) : (
+            <span className="text-gray-400 text-sm">Ürün Görseli</span>
+          )}
+        </div>
+      </div>
+      <h1 className="text-sm font-semibold text-gray-800 flex-1">{product.name}</h1>
+      <p className="text-md mb-2">{product.brand}</p>
+      <div className="flex flex-col gap-1 mb-3">
+        {product.oldPrice && (
+          <span className="text-gray-400 line-through text-sm">{product.oldPrice.toLocaleString()} TL</span>
+        )}
+        <span className="text-orange-600 font-bold text-lg">{product.price.toLocaleString()} TL</span>
+      </div>
+      <button
+        disabled={adding}
+        className="mt-3 w-full bg-orange-500 hover:bg-orange-600 text-white py-1 rounded cursor-pointer"
+        onClick={handleAddToCart}
+      >
+        {adding ? "Ekleniyor..." : "Sepete Ekle"}
+      </button>
+    </div>
+  );
+};
+export default ProductCard;
+
