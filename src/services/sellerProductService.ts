@@ -1,11 +1,11 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const PRODUCTS_API = `${API_BASE}/products`;
 
 const getToken = () => localStorage.getItem("token");
 
 // LİSTELEME - GET
-export const fetchMyProducts = async () => {
+export const fetchMyProducts = async (): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${PRODUCTS_API}/my-products`, {
@@ -24,7 +24,7 @@ export const fetchMyProducts = async () => {
 };
 
 // SİLME - DELETE
-export const deleteProduct = async (productId) => {
+export const deleteProduct = async (productId: string | number): Promise<boolean> => {
   const token = getToken();
 
   const response = await fetch(`${PRODUCTS_API}/${productId}`, {
@@ -36,7 +36,7 @@ export const deleteProduct = async (productId) => {
 
   if (!response.ok) {
     const error = new Error("Ürün silinemedi");
-    error.status = response.status;
+    (error as any).status = response.status;
     throw error;
   }
 
@@ -44,7 +44,7 @@ export const deleteProduct = async (productId) => {
 };
 
 // ÜRÜN EKLEME - POST (multipart/form-data uyumlu)
-export const createProduct = async (formData) => {
+export const createProduct = async (formData: FormData): Promise<any> => {
   const token = localStorage.getItem("token");
 
   // FormData mı gerçekten?
@@ -69,7 +69,7 @@ export const createProduct = async (formData) => {
 };
 
 // ÜRÜN GÜNCELLEME - PUT (multipart/form-data formatına uygun)
-export const updateProduct = async (id, formData) => {
+export const updateProduct = async (id: string | number, formData: FormData): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${PRODUCTS_API}/${id}`, {
@@ -89,7 +89,7 @@ export const updateProduct = async (id, formData) => {
   return await response.json();
 };
 
-export const getProductById = async (id) => {
+export const getProductById = async (id: string | number): Promise<any> => {
   const response = await fetch(`${PRODUCTS_API}/my-products/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -99,7 +99,7 @@ export const getProductById = async (id) => {
   return await response.json();
 };
 
-export const getProductsBySeller = async (sellerId) => {
+export const getProductsBySeller = async (sellerId: string | number): Promise<any> => {
   const response = await fetch(`${PRODUCTS_API}/seller/${sellerId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -110,7 +110,7 @@ export const getProductsBySeller = async (sellerId) => {
 };
 
 
-export const submitForApprovalProduct = async (id) => {
+export const submitForApprovalProduct = async (id: string | number): Promise<any> => {
   const token = localStorage.getItem('token');
 
   const response = await fetch(`${PRODUCTS_API}/${id}/submit-for-approval`, {
@@ -129,7 +129,7 @@ export const submitForApprovalProduct = async (id) => {
 };
 
 // ONAYLI ÜRÜNLERİ LİSTELE - GET
-export const fetchMyApprovedProducts = async () => {
+export const fetchMyApprovedProducts = async (): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${PRODUCTS_API}/my-products/approved`, {
@@ -146,7 +146,7 @@ export const fetchMyApprovedProducts = async () => {
   return await response.json();
 };
 
-export const toggleProductStatus = async (id) => {
+export const toggleProductStatus = async (id: string | number): Promise<any> => {
   const token = getToken();
   const response = await fetch(`${PRODUCTS_API}/${id}/toggle-status`, {
     method: "POST",
@@ -157,7 +157,7 @@ export const toggleProductStatus = async (id) => {
 };
 
 // Satıcıya ait ürün soruları
-export const getMyProductQuestions = async () => {
+export const getMyProductQuestions = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${API_BASE}/product-questions/my-product-questions`, {
@@ -174,7 +174,7 @@ export const getMyProductQuestions = async () => {
 };
 
 //soruyu cevaplamak
-export const answerProductQuestion = async (questionId, answerText) => {
+export const answerProductQuestion = async (questionId: string | number, answerText: string): Promise<any> => {
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API_BASE}/product-questions/${questionId}/answer`, {
@@ -191,14 +191,14 @@ export const answerProductQuestion = async (questionId, answerText) => {
     }
 
     return await response.json(); // backend cevabı
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     throw err;
   }
 };
 
 //Reddetme
-export const rejectProductQuestion = async (questionId) => {
+export const rejectProductQuestion = async (questionId: string | number): Promise<boolean> => {
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API_BASE}/product-questions/${questionId}/reject`, {
@@ -213,14 +213,14 @@ export const rejectProductQuestion = async (questionId) => {
     }
 
     return true;
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     throw err;
   }
 };
 
 // Excel dosyası ürün import etme
-export const bulkImportProducts = async (formData) => {
+export const bulkImportProducts = async (formData: FormData): Promise<any> => {
   const token = localStorage.getItem("token");
   
 
@@ -241,7 +241,7 @@ export const bulkImportProducts = async (formData) => {
 
 
 //  Zorunlu kolon başlıklarını çekme
-export const getBulkImportRequiredColumns = async () => {
+export const getBulkImportRequiredColumns = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${PRODUCTS_API}/bulk-import/required-columns`, {
@@ -258,7 +258,7 @@ export const getBulkImportRequiredColumns = async () => {
 };
 
 //  Opsiyonel kolon başlıklarını çekme
-export const getBulkImportOptionalColumns = async () => {
+export const getBulkImportOptionalColumns = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${PRODUCTS_API}/bulk-import/optional-columns`, {
@@ -273,3 +273,4 @@ export const getBulkImportOptionalColumns = async () => {
 
   return await response.json();
 };
+

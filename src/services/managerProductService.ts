@@ -1,8 +1,8 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 const MANAGER_PRODUCTS_API = `${API_BASE}/manager/products`;
 
 // ONAY BEKLEYEN ÜRÜNLER
-export const getWaitingApprovalProducts = async () => {
+export const getWaitingApprovalProducts = async (): Promise<any> => {
   const token = localStorage.getItem("token"); 
 
   const response = await fetch(`${MANAGER_PRODUCTS_API}/waiting-approval` ,{
@@ -20,7 +20,7 @@ export const getWaitingApprovalProducts = async () => {
 };
 
 //ONAYLAMA
-export const approveProduct = async (productId) => {
+export const approveProduct = async (productId: string | number): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${MANAGER_PRODUCTS_API}/${productId}/approve`, {
@@ -37,7 +37,7 @@ export const approveProduct = async (productId) => {
 };
 
 //REDDETME
-export const rejectProduct = async (productId, rejectionReason) => {
+export const rejectProduct = async (productId: string | number, rejectionReason: string): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${MANAGER_PRODUCTS_API}/${productId}/reject`, {
@@ -54,3 +54,4 @@ export const rejectProduct = async (productId, rejectionReason) => {
   }
   return response.json();
 };
+

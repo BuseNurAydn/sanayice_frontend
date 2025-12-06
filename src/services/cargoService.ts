@@ -1,11 +1,10 @@
-
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const CARGO_API = `${API_BASE}/ptt`;
 
 const getToken = () => localStorage.getItem("token");
 
-export const createShipmentLabel = async (orderData) => {
+export const createShipmentLabel = async (orderData: any): Promise<string | null> => {
   try {
     const token = getToken();
     const response = await fetch(`${CARGO_API}/shipments`, {
@@ -21,7 +20,7 @@ export const createShipmentLabel = async (orderData) => {
 
     const data = await response.json();
 
-    // PTT API’nin dönme biçimine göre
+    // PTT API'nin dönme biçimine göre
     const barkodUrl = data?.dongu?.[0]?.barkodQuid;
 
     return barkodUrl || null;
@@ -32,7 +31,7 @@ export const createShipmentLabel = async (orderData) => {
 };
 
 // Temel takip sorgusu
-export const fetchCargoTracking = async (barcode) => {
+export const fetchCargoTracking = async (barcode: string): Promise<any> => {
   const response = await fetch(`${CARGO_API}/tracking/${barcode}`);
   if (!response.ok) {
     throw new Error("Kargo takibi yapılamadı");
@@ -41,7 +40,7 @@ export const fetchCargoTracking = async (barcode) => {
 };
 
 // Detaylı takip sorgusu
-export const fetchCargoTrackingDetailed = async (barcode) => {
+export const fetchCargoTrackingDetailed = async (barcode: string): Promise<any> => {
   const response = await fetch(`${CARGO_API}/tracking-detailed/${barcode}`);
   if (!response.ok) {
     throw new Error("Kargo detaylı takibi yapılamadı");
@@ -50,7 +49,7 @@ export const fetchCargoTrackingDetailed = async (barcode) => {
 };
 
 //orderId ye göre takip sorgulama
-export const fetchCargoTrackingByOrderId = async (orderId) => {
+export const fetchCargoTrackingByOrderId = async (orderId: string | number): Promise<any> => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(`${CARGO_API}/tracking/${orderId}`, {
@@ -71,3 +70,4 @@ export const fetchCargoTrackingByOrderId = async (orderId) => {
     throw error;
   }
 };
+

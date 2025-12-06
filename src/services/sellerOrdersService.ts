@@ -1,10 +1,10 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const ORDERS_API = `${API_BASE}/seller/orders`;
 
 const getToken = () => localStorage.getItem("token");
 
-export const fetchSellerOrders = async () => {
+export const fetchSellerOrders = async (): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${ORDERS_API}/summary`, {
@@ -24,7 +24,7 @@ export const fetchSellerOrders = async () => {
 };
 
 // Action PUT
-export const updateOrderStatus = async (orderId, action) => {
+export const updateOrderStatus = async (orderId: string | number, action: string): Promise<any> => {
   const token = getToken();
 
   try {
@@ -42,11 +42,9 @@ export const updateOrderStatus = async (orderId, action) => {
     }
 
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.error("Sipariş güncellenemedi:", err.message);
     throw err;
   }
 };
-
-
 

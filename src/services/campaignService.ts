@@ -1,9 +1,9 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const CAMPAIGN_API = `${API_BASE}/sellers/campaigns`;
 
 // ADD CAMPAİGN
-export const addCampaign = async (formData) => {
+export const addCampaign = async (formData: FormData): Promise<any> => {
   const token = localStorage.getItem("token");
   const response = await fetch(CAMPAIGN_API, {
     method: "POST",
@@ -15,7 +15,7 @@ export const addCampaign = async (formData) => {
 
   if (!response.ok) {
     const error = new Error("Kampanya eklenemedi");
-    error.status = response.status;
+    (error as any).status = response.status;
     throw error;
   }
   return await response.json();
@@ -23,7 +23,7 @@ export const addCampaign = async (formData) => {
 
 
 // GET CAMPAİGN
-export const getCampaigns = async () => {
+export const getCampaigns = async (): Promise<any> => {
   const response = await fetch(`${API_BASE}/managers/campaigns`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -38,7 +38,7 @@ export const getCampaigns = async () => {
 };
 
 // UPDATE CAMPAİGN
-export const updateCampaign = async (id, formData) => {
+export const updateCampaign = async (id: string | number, formData: FormData): Promise<any> => {
   const response = await fetch(`${CAMPAIGN_API}/${id}`, {
     method: 'PUT',
     headers: {
@@ -49,7 +49,7 @@ export const updateCampaign = async (id, formData) => {
 
   if (!response.ok) {
     const error = new Error("Kampanya güncellenemedi.");
-    error.status = response.status;
+    (error as any).status = response.status;
     throw error;
   }
 
@@ -58,7 +58,7 @@ export const updateCampaign = async (id, formData) => {
 };
 
 // DELETE CAMPAİGN
-export const deleteCampaign = async (id) => {
+export const deleteCampaign = async (id: string | number): Promise<boolean> => {
   const response = await fetch(`${CAMPAIGN_API}/${id}`, {
     method: 'DELETE',
     headers: {
@@ -73,5 +73,4 @@ export const deleteCampaign = async (id) => {
 
   return true;
 };
-
 

@@ -1,11 +1,11 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const CATEGORY_API = `${API_BASE}`;
 
 const getToken = () => localStorage.getItem("token");
 
 // KATEGORİLERİ LİSTELEME
-export const fetchCategories = async () => {
+export const fetchCategories = async (): Promise<any> => {
   
   const response = await fetch(`${CATEGORY_API}/categories`, {
     method: "GET",
@@ -23,7 +23,7 @@ export const fetchCategories = async () => {
 };
 
 // ALT KATEGORİLERİ LİSTELEME
-export const fetchSubcategories = async () => {
+export const fetchSubcategories = async (): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${CATEGORY_API}/subcategories`, {
@@ -40,7 +40,7 @@ export const fetchSubcategories = async () => {
 };
 
 // TIKLANAN KATEGORİYİ GETİR
-export const getCategoryById = async (id) => {
+export const getCategoryById = async (id: string | number): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${CATEGORY_API}/categories/${id}`, {
@@ -55,7 +55,7 @@ export const getCategoryById = async (id) => {
 };
 
 // TIKLANAN ALT KATEGORİYİ GETİR
-export const getSubCategoryById = async (id) => {
+export const getSubCategoryById = async (id: string | number): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${CATEGORY_API}/subcategories/${id}`, {
@@ -70,7 +70,7 @@ export const getSubCategoryById = async (id) => {
 };
 
 // KATEGORİ / ALT KATEGORİ SİLME
-export const deleteCategory = async (id, type = "category") => {
+export const deleteCategory = async (id: string | number, type: string = "category"): Promise<void> => {
   const token = getToken();
 
   const endpoint =
@@ -89,7 +89,7 @@ export const deleteCategory = async (id, type = "category") => {
 };
 
 // KATEGORİ GÜNCELLEME
-export const updateCategory = async (id, formData) => {
+export const updateCategory = async (id: string | number, formData: FormData): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${CATEGORY_API}/managers/categories/${id}`, {
@@ -111,7 +111,7 @@ export const updateCategory = async (id, formData) => {
 
 
 // ALT KATEGORİ EKLE / GÜNCELLE
-export const saveSubcategory = async (id, formData) => {
+export const saveSubcategory = async (id: string | number | null, formData: FormData): Promise<any> => {
   const token = getToken();
 
   const url = id
@@ -137,7 +137,7 @@ export const saveSubcategory = async (id, formData) => {
 };
 
 // KATEGORİ EKLEME
-export const addCategory = async (formData) => {
+export const addCategory = async (formData: FormData): Promise<any> => {
   const token = getToken();
 
  // formData mı gerçekten?
@@ -164,3 +164,4 @@ export const addCategory = async (formData) => {
 
   return await response.json();
 };
+

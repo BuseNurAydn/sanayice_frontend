@@ -1,11 +1,11 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const DASHBOARD_API = `${API_BASE}/seller/dashboard`;
 
 const getToken = () => localStorage.getItem("token");
 
 //GET İSTATİSLİK
-export const fetchDashboardStats = async () => {
+export const fetchDashboardStats = async (): Promise<any> => {
   const token = getToken();
   const response = await fetch(`${DASHBOARD_API}/stats`, {
     method: "GET",
@@ -21,7 +21,7 @@ export const fetchDashboardStats = async () => {
 };
 
 //GET- SON 3 SİPARİŞ
-export const fetchRecentOrders = async () => {
+export const fetchRecentOrders = async (): Promise<any> => {
   const token = getToken();
   const response = await fetch(`${DASHBOARD_API}/recent-orders`, {
     method: "GET",
@@ -37,7 +37,7 @@ export const fetchRecentOrders = async () => {
 };
 
 //GET- POPÜLER ÜRÜNLER
-export const fetchPopulerProducts = async () => {
+export const fetchPopulerProducts = async (): Promise<any> => {
   const token = getToken();
   const response = await fetch(`${DASHBOARD_API}/popular-products`, {
     method: "GET",
@@ -51,3 +51,4 @@ export const fetchPopulerProducts = async () => {
   }
   return await response.json();
 };
+

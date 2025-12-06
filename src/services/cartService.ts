@@ -25,7 +25,7 @@ export const fetchCart = createAsyncThunk(
 
       const data = await response.json(); // sepetteki ürünler
       return data;
-    } catch (error) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -34,7 +34,7 @@ export const fetchCart = createAsyncThunk(
 // Async thunk: sepete ürün ekleme
 export const addToCart = createAsyncThunk(
   'cart/addToCart',
-  async ({ productId, quantity }, thunkAPI) => {
+  async ({ productId, quantity }: { productId: number; quantity: number }, thunkAPI) => {
     try {
       const token = getToken();
       const response = await fetch(`${CART_API}/items`, {
@@ -53,7 +53,7 @@ export const addToCart = createAsyncThunk(
 
       const data = await response.json();
       return data;
-    } catch (error) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
@@ -62,7 +62,7 @@ export const addToCart = createAsyncThunk(
 // Ürünü sepetten sil
 export const removeCart = createAsyncThunk(
   'cart/removeFromCart',
-  async (cartItemId, thunkAPI) => {  // sepet tablosundaki id
+  async (cartItemId: string | number, thunkAPI) => {  // sepet tablosundaki id
     try {
       const token = getToken();
       const response = await fetch(`${CART_API}/items/${cartItemId}`, {
@@ -77,7 +77,7 @@ export const removeCart = createAsyncThunk(
       }
 
       return cartItemId;  // reducer'da bu id ile listeden sil
-    } catch (error) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -100,7 +100,7 @@ export const clearCart = createAsyncThunk(
       }
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -109,7 +109,7 @@ export const clearCart = createAsyncThunk(
 //PUT
 export const changeQuantity = createAsyncThunk(
   "cart/changeQuantity",
-  async ({ itemId, quantity }, thunkAPI) => {
+  async ({ itemId, quantity }: { itemId: string | number; quantity: number }, thunkAPI) => {
     try {
       const token = getToken(); 
 
@@ -130,7 +130,7 @@ export const changeQuantity = createAsyncThunk(
       thunkAPI.dispatch(fetchCart());
 
       return { itemId, quantity };
-    } catch (error) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }

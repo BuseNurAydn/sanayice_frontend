@@ -1,9 +1,9 @@
-// src/services/contactService.js
-import { API_BASE } from "../config";
+// src/services/contactService.ts
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const CONTACT_API = `${API_BASE}/contact`;
 
-export const sendContactEmail = async (contactData) => {
+export const sendContactEmail = async (contactData: any): Promise<{ success: boolean; message: string }> => {
   try {
     const response = await fetch(`${CONTACT_API}/send`, {
       method: 'POST',
@@ -24,7 +24,7 @@ export const sendContactEmail = async (contactData) => {
       message: result
     };
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Contact service error:', error);
     return {
       success: false,
@@ -36,3 +36,4 @@ export const sendContactEmail = async (contactData) => {
 export default {
   sendContactEmail
 };
+

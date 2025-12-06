@@ -29,7 +29,7 @@ export const fetchFavorites = createAsyncThunk(
 // Favori Ekle
 export const addToFavorites = createAsyncThunk(
   'favorites/addToFavorites',
-  async (productId, thunkAPI) => {
+  async (productId: number, thunkAPI) => {
     const token = getToken();
     const response = await fetch(`${FAVORİTE_API}/add/${productId}`, {
       method: "POST",
@@ -51,7 +51,7 @@ export const addToFavorites = createAsyncThunk(
 // Favori Sil
 export const removeFavorites = createAsyncThunk(
   'favorites/removeFavorites',
-  async (productId, thunkAPI) => {
+  async (productId: number, thunkAPI) => {
     const token = getToken();
     const response = await fetch(`${FAVORİTE_API}/remove/${productId}`, {
       method: "DELETE",

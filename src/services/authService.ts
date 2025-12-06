@@ -1,8 +1,10 @@
+import { LoginData, User, AuthResponse } from '@/types/auth';
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const AUTH_API = `${API_BASE}/auth`;
 
-export const verifyEmail = async (verificationData) => {
+export const verifyEmail = async (verificationData: any): Promise<string> => {
   try {
     const response = await fetch(`${AUTH_API}/verify-email`, {
       method: 'POST',
@@ -25,7 +27,7 @@ export const verifyEmail = async (verificationData) => {
 };
 
 // Doğrulama kodu tekrar gönderme fonksiyonu
-export const resendVerificationCode = async (resendData) => {
+export const resendVerificationCode = async (resendData: any): Promise<string> => {
   try {
     const response = await fetch(`${AUTH_API}/resend-verification`, {
       method: 'POST',
@@ -47,7 +49,7 @@ export const resendVerificationCode = async (resendData) => {
   }
 };
 
-export const login = async (loginData) => {
+export const login = async (loginData: LoginData): Promise<User & { token: string; roles: string[] }> => {
   try {
     const response = await fetch(`${AUTH_API}/login`, {
       method: 'POST',
@@ -68,7 +70,7 @@ export const login = async (loginData) => {
   }
 };
 
-export const registerCustomer = async (payload) => {
+export const registerCustomer = async (payload: any): Promise<any> => {
   const response = await fetch(`${AUTH_API}/register`, {
     method: 'POST',
     headers: {
@@ -86,7 +88,7 @@ export const registerCustomer = async (payload) => {
   return result;
 };
 
-export const registerSeller = async (payload) => {
+export const registerSeller = async (payload: any): Promise<any> => {
 
     const response = await fetch(`${AUTH_API}/register`, {
         method: 'POST',
@@ -106,7 +108,7 @@ export const registerSeller = async (payload) => {
 };
 
 //GET PROFİLE
-export const getMyProfile = async () => {
+export const getMyProfile = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${AUTH_API}/profile`, {
@@ -123,7 +125,7 @@ export const getMyProfile = async () => {
 };
 
 //SELLER-MANAGER PUT PROFİLE
-export const updateMyProfile = async (profileData) => {
+export const updateMyProfile = async (profileData: any): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const formData = new FormData();
@@ -165,7 +167,7 @@ export const updateMyProfile = async (profileData) => {
 // API servislerinize eklenecek fonksiyonlar
 
 // Şifre sıfırlama talebi
-export const forgotPassword = async (resetData) => {
+export const forgotPassword = async (resetData: any): Promise<string> => {
   try {
     const response = await fetch(`${AUTH_API}/forgot-password`, {
       method: 'POST',
@@ -188,7 +190,7 @@ export const forgotPassword = async (resetData) => {
 };
 
 // Şifre sıfırlama kodu doğrulama
-export const verifyResetCode = async (verificationData) => {
+export const verifyResetCode = async (verificationData: any): Promise<string> => {
   try {
     const response = await fetch(`${AUTH_API}/verify-reset-code`, {
       method: 'POST',
@@ -211,7 +213,7 @@ export const verifyResetCode = async (verificationData) => {
 };
 
 // Şifre sıfırlama
-export const resetPassword = async (resetData) => {
+export const resetPassword = async (resetData: any): Promise<string> => {
   try {
     const response = await fetch(`${AUTH_API}/reset-password`, {
       method: 'POST',
@@ -233,7 +235,7 @@ export const resetPassword = async (resetData) => {
   }
 };
 
-export const isFollowingSeller = async (sellerId) => {
+export const isFollowingSeller = async (sellerId: string | number): Promise<boolean> => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${AUTH_API}/is-following/${sellerId}`, {
@@ -251,7 +253,7 @@ export const isFollowingSeller = async (sellerId) => {
 };
 
 //GET FOLLOWİNG
-export const getFollowing = async () => {
+export const getFollowing = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${AUTH_API}/following`, {
@@ -268,7 +270,7 @@ export const getFollowing = async () => {
 };
 
 // SELLER FOLLOW
-export const followSeller = async (sellerId) => {
+export const followSeller = async (sellerId: string | number): Promise<any> => {
   const token = localStorage.getItem("token");
 
   try {
@@ -301,7 +303,7 @@ export const followSeller = async (sellerId) => {
 };
 
 // SELLER UNFOLLOW
-export const unfollowSeller = async (sellerId) => {
+export const unfollowSeller = async (sellerId: string | number): Promise<any> => {
   const token = localStorage.getItem("token");
 
   try {
@@ -331,7 +333,7 @@ export const unfollowSeller = async (sellerId) => {
   }
 };
 // SELLER RATE
-export const rateSeller = async ({ sellerId, rating, comment }) => {
+export const rateSeller = async ({ sellerId, rating, comment }: { sellerId: string | number; rating: number; comment: string }): Promise<{ message: string }> => {
   const token = localStorage.getItem("token");
 
   try {
@@ -362,7 +364,7 @@ export const rateSeller = async ({ sellerId, rating, comment }) => {
 };
 
 // Satıcıya ait yorumları çek
-export const getSellerRatings = async (sellerId) => {
+export const getSellerRatings = async (sellerId: string | number): Promise<any> => {
   const token = localStorage.getItem("token");
 
   try {
@@ -383,3 +385,4 @@ export const getSellerRatings = async (sellerId) => {
     throw error;
   }
 };
+

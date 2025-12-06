@@ -1,9 +1,9 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const COUPON_API = `${API_BASE}/sellers/coupons`;
 
 // ADD COUPON
-export const addCoupon = async (formData) => {
+export const addCoupon = async (formData: FormData): Promise<any> => {
   const response = await fetch(COUPON_API, {
     method: 'POST',
     headers: {
@@ -20,7 +20,7 @@ export const addCoupon = async (formData) => {
 };
 
 // GET COUPON
-export const getCoupons = async () => {
+export const getCoupons = async (): Promise<any> => {
   const response = await fetch(COUPON_API, {
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const getCoupons = async () => {
 };
 
 //UPDATE COUPON
-export const updateCoupon = async (id, couponData) => {
+export const updateCoupon = async (id: string | number, couponData: FormData): Promise<any> => {
   const response = await fetch(`${COUPON_API}/${id}`, {
     method: 'PUT',
     headers: {
@@ -54,7 +54,7 @@ export const updateCoupon = async (id, couponData) => {
 };
 
 // DELETE COUPON
-export const deleteCoupon = async (id) => {
+export const deleteCoupon = async (id: string | number): Promise<boolean> => {
   const response = await fetch(`${COUPON_API}/${id}`, {
     method: 'DELETE',
     headers: {
@@ -68,5 +68,4 @@ export const deleteCoupon = async (id) => {
 
   return true;
 };
-
 

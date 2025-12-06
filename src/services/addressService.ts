@@ -1,9 +1,9 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const ADDRESS_API = `${API_BASE}/addresses`;
 
 //POST ADDRESS
-export const createAddress = async (addressData) => {
+export const createAddress = async (addressData: any): Promise<any> => {
   const token = localStorage.getItem("token");
   
 
@@ -25,7 +25,7 @@ export const createAddress = async (addressData) => {
 };
 
 //GET ADDRESS
-export const fetchAddresses = async () => {
+export const fetchAddresses = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(ADDRESS_API, {
@@ -45,7 +45,7 @@ export const fetchAddresses = async () => {
 };
 
 //DELETE ADDRESS
-export const deleteAddress = async (id) => {
+export const deleteAddress = async (id: string | number): Promise<boolean> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${ADDRESS_API}/${id}`, {
@@ -63,7 +63,7 @@ export const deleteAddress = async (id) => {
 };
 
 //GET ID
-export const getAddressById = async (id) => {
+export const getAddressById = async (id: string | number): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${ADDRESS_API}/${id}`, {
@@ -80,7 +80,7 @@ export const getAddressById = async (id) => {
 };
 
 //PUT ADDRESS
-export const updateAddress = async (id, formData) => {
+export const updateAddress = async (id: string | number, formData: any): Promise<boolean> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${ADDRESS_API}/${id}`, {
@@ -97,6 +97,4 @@ export const updateAddress = async (id, formData) => {
   }
   return true;
 };
-
-
 

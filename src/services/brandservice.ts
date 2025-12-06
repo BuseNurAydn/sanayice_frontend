@@ -1,11 +1,11 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const BRAND_API = `${API_BASE}`;
 
 const getToken = () => localStorage.getItem("token");
 
 // MARKALARI LİSTELEME (PUBLIC)
-export const fetchBrands = async () => {
+export const fetchBrands = async (): Promise<any> => {
   const response = await fetch(`${BRAND_API}/brands`, {
     method: "GET",
     headers: {
@@ -22,7 +22,7 @@ export const fetchBrands = async () => {
 };
 
 // AKTİF MARKALARI LİSTELEME (PUBLIC)
-export const fetchActiveBrands = async () => {
+export const fetchActiveBrands = async (): Promise<any> => {
   const response = await fetch(`${BRAND_API}/brands/active`, {
     method: "GET",
     headers: {
@@ -39,7 +39,7 @@ export const fetchActiveBrands = async () => {
 };
 
 // MARKA DETAYLARİNİ GETİR (PUBLIC)
-export const getBrandById = async (id) => {
+export const getBrandById = async (id: string | number): Promise<any> => {
   const response = await fetch(`${BRAND_API}/brands/${id}`, {
     method: "GET",
     headers: {
@@ -55,7 +55,7 @@ export const getBrandById = async (id) => {
 };
 
 // MANAGER: TÜM MARKALARI LİSTELEME
-export const fetchBrandsForManager = async () => {
+export const fetchBrandsForManager = async (): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${BRAND_API}/managers/brands`, {
@@ -75,7 +75,7 @@ export const fetchBrandsForManager = async () => {
 };
 
 // MANAGER: MARKA EKLEME
-export const addBrand = async (formData) => {
+export const addBrand = async (formData: FormData): Promise<any> => {
   const token = getToken();
 
   // formData mı gerçekten?
@@ -105,7 +105,7 @@ export const addBrand = async (formData) => {
 };
 
 // MANAGER: MARKA GÜNCELLEME
-export const updateBrand = async (id, formData) => {
+export const updateBrand = async (id: string | number, formData: FormData): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${BRAND_API}/managers/brands/${id}`, {
@@ -126,7 +126,7 @@ export const updateBrand = async (id, formData) => {
 };
 
 // MANAGER: MARKA SİLME
-export const deleteBrand = async (id) => {
+export const deleteBrand = async (id: string | number): Promise<void> => {
   const token = getToken();
 
   const response = await fetch(`${BRAND_API}/managers/brands/${id}`, {
@@ -142,7 +142,7 @@ export const deleteBrand = async (id) => {
 };
 
 // MANAGER: MARKA DURUMU DEĞİŞTİRME (AKTİF/PASİF)
-export const toggleBrandStatus = async (id) => {
+export const toggleBrandStatus = async (id: string | number): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${BRAND_API}/managers/brands/${id}/toggle-status`, {
@@ -162,7 +162,7 @@ export const toggleBrandStatus = async (id) => {
 };
 
 // MANAGER: MARKA ARAMA
-export const searchBrands = async (name) => {
+export const searchBrands = async (name: string): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${BRAND_API}/managers/brands/search?name=${encodeURIComponent(name)}`, {
@@ -181,7 +181,7 @@ export const searchBrands = async (name) => {
 };
 
 // MANAGER: DURUMA GÖRE MARKA LİSTELEME
-export const getBrandsByStatus = async (status) => {
+export const getBrandsByStatus = async (status: string): Promise<any> => {
   const token = getToken();
 
   const response = await fetch(`${BRAND_API}/managers/brands/status/${status}`, {
@@ -198,3 +198,4 @@ export const getBrandsByStatus = async (status) => {
 
   return response.json();
 };
+

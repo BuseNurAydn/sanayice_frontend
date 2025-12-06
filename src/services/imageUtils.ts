@@ -1,4 +1,4 @@
-// imageUtils.js - Resim sıkıştırma ve boyutlandırma fonksiyonları
+// imageUtils.ts - Resim sıkıştırma ve boyutlandırma fonksiyonları
 
 /**
  * Resmi sıkıştırır ve boyutlandırır
@@ -6,7 +6,7 @@
  * @param {Object} options - Sıkıştırma seçenekleri
  * @returns {Promise<File>} - Sıkıştırılmış resim dosyası
  */
-export const compressImage = (file, options = {}) => {
+export const compressImage = (file: any, options: any = {}): Promise<any> => {
     return new Promise((resolve, reject) => {
       // Varsayılan seçenekler
       const defaultOptions = {
@@ -67,7 +67,7 @@ export const compressImage = (file, options = {}) => {
   /**
    * Yeni boyutları hesaplar (orantıyı koruyarak)
    */
-  const calculateNewDimensions = (originalWidth, originalHeight, maxWidth, maxHeight) => {
+  const calculateNewDimensions = (originalWidth: any, originalHeight: any, maxWidth: any, maxHeight: any): any => {
     let width = originalWidth;
     let height = originalHeight;
   
@@ -89,13 +89,13 @@ export const compressImage = (file, options = {}) => {
   /**
    * Kalite ile sıkıştır ve boyut kontrol et
    */
-  const compressWithQuality = (canvas, config, fileName) => {
+  const compressWithQuality = (canvas: any, config: any, fileName: any): Promise<any> => {
     return new Promise((resolve, reject) => {
       let quality = config.quality;
       const maxSizeBytes = config.maxSizeMB * 1024 * 1024;
   
-      const tryCompress = (currentQuality) => {
-        canvas.toBlob((blob) => {
+      const tryCompress = (currentQuality: any) => {
+        canvas.toBlob((blob: any) => {
           if (!blob) {
             reject(new Error('Resim sıkıştırılamadı'));
             return;
@@ -123,7 +123,7 @@ export const compressImage = (file, options = {}) => {
   /**
    * Resim önizleme URL'i oluştur
    */
-  export const createImagePreview = (file) => {
+  export const createImagePreview = (file: any): Promise<any> => {
     return new Promise((resolve, reject) => {
       if (!file.type.startsWith('image/')) {
         reject(new Error('Geçersiz dosya tipi'));
@@ -131,7 +131,7 @@ export const compressImage = (file, options = {}) => {
       }
   
       const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
+      reader.onload = (e: any) => resolve(e.target.result);
       reader.onerror = () => reject(new Error('Dosya okunamadı'));
       reader.readAsDataURL(file);
     });
@@ -140,7 +140,7 @@ export const compressImage = (file, options = {}) => {
   /**
    * Dosya boyutunu formatla (KB, MB)
    */
-  export const formatFileSize = (bytes) => {
+  export const formatFileSize = (bytes: any): any => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -151,7 +151,7 @@ export const compressImage = (file, options = {}) => {
   /**
    * Resim bilgilerini al
    */
-  export const getImageInfo = (file) => {
+  export const getImageInfo = (file: any): Promise<any> => {
     return new Promise((resolve) => {
       const img = new Image();
       img.onload = () => {
@@ -166,3 +166,4 @@ export const compressImage = (file, options = {}) => {
       img.src = URL.createObjectURL(file);
     });
   };
+

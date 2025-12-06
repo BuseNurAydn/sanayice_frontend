@@ -1,9 +1,9 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const SUPPORT_API = `${API_BASE}`;
 
 //POST 
-export const createSupportTicket = async (ticketData) => {
+export const createSupportTicket = async (ticketData: any): Promise<any> => {
   const token = localStorage.getItem('token');
 
   const response = await fetch(`${SUPPORT_API}/support/tickets`, {
@@ -25,7 +25,7 @@ export const createSupportTicket = async (ticketData) => {
 };
 
 //GET
-export const getSupportTicketsByCustomer = async (customerId) => {
+export const getSupportTicketsByCustomer = async (customerId: string | number): Promise<any> => {
   const token = localStorage.getItem('token');
 
   const response = await fetch(`${SUPPORT_API}/support/tickets/customer/${customerId}`, {
@@ -42,7 +42,7 @@ export const getSupportTicketsByCustomer = async (customerId) => {
 };
 
 //MANAGER GET ALL TİCKETS
-export const getAllSupportTickets = async () => {
+export const getAllSupportTickets = async (): Promise<any> => {
   const token = localStorage.getItem('token');
 
   const response = await fetch(`${SUPPORT_API}/managers/support/tickets`, {
@@ -60,7 +60,7 @@ export const getAllSupportTickets = async () => {
 };
 
 //POST MESSAGE
-export const replyToSupportTicket = async (ticketId, message) => {
+export const replyToSupportTicket = async (ticketId: string | number, message: string): Promise<any> => {
   const token = localStorage.getItem('token'); 
 
   const response = await fetch(`${SUPPORT_API}/managers/support/tickets/${ticketId}/replies`, {
@@ -80,7 +80,7 @@ export const replyToSupportTicket = async (ticketId, message) => {
 };
 
 //PUT STATUS
-export const updateTicketStatus = async (ticketId, status) => {
+export const updateTicketStatus = async (ticketId: string | number, status: string): Promise<any> => {
   const token = localStorage.getItem('token');
 
   const response = await fetch(`${SUPPORT_API}/managers/support/tickets/${ticketId}/status?status=${status}`, {
@@ -96,5 +96,4 @@ export const updateTicketStatus = async (ticketId, status) => {
 
   return await response.json();
 };
-
 

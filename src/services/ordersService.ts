@@ -1,9 +1,9 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const ORDERS_API = `${API_BASE}/orders`;
 
 //Sepeti Onayla - Post
-export const handleConfirmCart = async ({ shippingAddress, billingAddress, customerNotes }) => {
+export const handleConfirmCart = async ({ shippingAddress, billingAddress, customerNotes }: { shippingAddress: any; billingAddress: any; customerNotes?: string }): Promise<any> => {
   const token = localStorage.getItem("token");
 
   try {
@@ -26,14 +26,14 @@ export const handleConfirmCart = async ({ shippingAddress, billingAddress, custo
 
     const result = await response.json();
     return result; 
-  } catch (err) {
+  } catch (err: any) {
     console.error("Hata:", err.message);
     throw err;
   }
 }; 
 
 // Siparişleri Getir - GET
-export const getOrders = async () => {
+export const getOrders = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   try {
@@ -49,12 +49,12 @@ export const getOrders = async () => {
     }
 
     return await response.json();
-  } catch (error) {
+  } catch (error: any) {
     console.error("Siparişler alınırken hata:", error.message);
     throw error;
   }
 };
-export const getStatus = async (status) => {
+export const getStatus = async (status: string): Promise<any> => {
   const token = localStorage.getItem("token");
 
   try {
@@ -66,8 +66,9 @@ export const getStatus = async (status) => {
     });
 
     return await response.json();
-  } catch (error) {
+  } catch (error: any) {
     console.error("Siparişler alınırken hata:", error.message);
     throw error;
   }
 };
+

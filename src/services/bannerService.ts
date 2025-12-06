@@ -1,9 +1,9 @@
-import { API_BASE } from "../config";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const BANNER_API = `${API_BASE}/managers/banners`;
 
 //POST BANNER 
-export const addBanner = async (banner) => {
+export const addBanner = async (banner: FormData): Promise<any> => {
   const token = localStorage.getItem("token");
   const response = await fetch(BANNER_API, {
     method: "POST",
@@ -26,7 +26,7 @@ export const addBanner = async (banner) => {
 };
 
 // PUT BANNER
-export const updateBanner = async (id, banner) => {
+export const updateBanner = async (id: string | number, banner: FormData): Promise<any> => {
   const token = localStorage.getItem("token");
   const response = await fetch(`${BANNER_API}/${id}`, {
     method: "PUT",
@@ -45,7 +45,7 @@ export const updateBanner = async (id, banner) => {
 };
 
 // GET BANNER
-export const getBanners = async () => {
+export const getBanners = async (): Promise<any> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(BANNER_API, {
@@ -62,7 +62,7 @@ export const getBanners = async () => {
 };
 
 //PUT Aktif / pasif durum değiştir
-export const toggleBannerStatus = async (bannerId) => {
+export const toggleBannerStatus = async (bannerId: string | number): Promise<any> => {
   const token = localStorage.getItem("token"); 
 
   const response = await fetch(`${BANNER_API}/${bannerId}/toggle-status`, {
@@ -80,7 +80,7 @@ export const toggleBannerStatus = async (bannerId) => {
 };
 
 // Banner sırasını değiştir
-export const updateBannerOrder = async (bannerId, newOrder) => {
+export const updateBannerOrder = async (bannerId: string | number, newOrder: number): Promise<any> => {
   const token = localStorage.getItem("token"); 
   const response = await fetch(`${BANNER_API}/${bannerId}/order?order=${newOrder}`, {
     method: "PUT",
@@ -99,7 +99,7 @@ export const updateBannerOrder = async (bannerId, newOrder) => {
 };
 
 //DELETE BANNER
-export const deleteBanner = async (bannerId) => {
+export const deleteBanner = async (bannerId: string | number): Promise<void> => {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${BANNER_API}/${bannerId}`, {
@@ -117,7 +117,7 @@ export const deleteBanner = async (bannerId) => {
 };
 
 // PUBLİC BANNER
-export const getAllPublicBanners = async () => {
+export const getAllPublicBanners = async (): Promise<any> => {
   const response = await fetch(`${API_BASE}/banners/active`);
 
   if (!response.ok) {
